@@ -1,0 +1,176 @@
+---
+const stages = [
+  { i: "01", verb: "Extract",    pkg: "apairo_extractor",  desc: "ROS bags → the .apairo layout",  href: "https://github.com/apairo-robotics/apairo_extractor" },
+  { i: "02", verb: "Load",       pkg: "apairo",            desc: "One numpy-native dataset API",    href: "https://github.com/apairo-robotics/apairo", core: true },
+  { i: "03", verb: "Transform",  pkg: "apairo_transform",  desc: "Lazy runtime augmentations",      href: "https://github.com/apairo-robotics/apairo_transform" },
+  { i: "04", verb: "Preprocess", pkg: "apairo_preprocess", desc: "Offline odometry & ground truth", href: "https://github.com/apairo-robotics/apairo_preprocess" },
+  { i: "05", verb: "Visualise",  pkg: "apairo_rr",         desc: "Inspect in the Rerun viewer",     href: "https://github.com/apairo-robotics/apairo_rr" },
+];
+---
+
+<section id="stack" class="section flow">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">01 / The stack</p>
+      <h2>Five packages, one pipeline.</h2>
+      <p>
+        Each package does one thing well and snaps onto the next. Start anywhere —
+        the <strong>apairo</strong> core is the only hard dependency.
+      </p>
+    </div>
+
+    <div class="track" data-reveal style="--delay: 120ms">
+      <div class="rail-line" aria-hidden="true"></div>
+      <div class="shuttle" aria-hidden="true"><span class="token"></span></div>
+
+      <ol class="stations">
+        {stages.map((s) => (
+          <li class={s.core ? "station station--core" : "station"}>
+            <a href={s.href} target="_blank" rel="noopener">
+              <span class="node" aria-hidden="true"><span class="dot"></span></span>
+              <span class="st-index mono">{s.i}</span>
+              <h3 class="st-verb">{s.verb}</h3>
+              <span class="st-pkg mono">{s.pkg}{s.core && <em class="core-tag"> core</em>}</span>
+              <span class="st-desc">{s.desc}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .flow { padding-bottom: clamp(3rem, 7vw, 5rem); }
+  .section-head strong { font-weight: 600; }
+
+  .track { position: relative; padding-top: 0.5rem; }
+
+  .rail-line {
+    position: absolute;
+    left: 0; right: 0;
+    top: 7px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line-strong) 8%, var(--line-strong) 92%, transparent);
+  }
+
+  .shuttle {
+    position: absolute;
+    top: 7px;
+    left: 10%;
+    width: 0; height: 0;
+    animation: shuttle 11s ease-in-out infinite alternate;
+  }
+  .token {
+    position: absolute;
+    top: -5px; left: -5px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--spark);
+    box-shadow: 0 0 0 4px var(--spark-glow), 0 0 12px 1px rgba(221,164,42,0.45);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .stations {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+  }
+  .station a {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.18rem;
+    padding-right: 0.8rem;
+  }
+
+  .node {
+    display: grid;
+    place-items: center;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--line-strong);
+    margin-bottom: 1.1rem;
+    transition: border-color 0.35s var(--ease), transform 0.35s var(--ease);
+  }
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--steel);
+    transition: background 0.35s var(--ease);
+  }
+  .station--core .node {
+    border-color: var(--spark);
+    width: 18px; height: 18px;
+    box-shadow: 0 0 0 5px var(--spark-glow);
+  }
+  .station--core .dot { background: var(--spark); }
+
+  .st-index { font-size: 0.68rem; color: var(--steel); letter-spacing: 0.1em; }
+  .st-verb {
+    font-size: 1.18rem;
+    font-weight: 480;
+    letter-spacing: -0.01em;
+  }
+  .st-pkg {
+    font-size: 0.74rem;
+    color: var(--ink-2);
+    word-break: break-word;
+  }
+  .core-tag {
+    color: var(--spark-ink);
+    font-style: normal;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.62rem;
+  }
+  .st-desc {
+    font-size: 0.85rem;
+    color: var(--steel);
+    line-height: 1.45;
+    margin-top: 0.15rem;
+  }
+
+  /* hover lift */
+  .station a:hover .node { border-color: var(--spark); transform: scale(1.18); }
+  .station a:hover .dot { background: var(--spark); }
+  .station a:hover .st-verb { color: var(--spark-ink); }
+  .station a { transition: transform 0.35s var(--ease); }
+  .station a:hover { transform: translateY(-3px); }
+
+  @keyframes shuttle {
+    0%   { left: 10%; }
+    9%   { left: 10%; }
+    23%  { left: 30%; }
+    31%  { left: 30%; }
+    46%  { left: 50%; }
+    54%  { left: 50%; }
+    69%  { left: 70%; }
+    77%  { left: 70%; }
+    91%  { left: 90%; }
+    100% { left: 90%; }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.35); opacity: 0.75; }
+  }
+
+  @media (max-width: 860px) {
+    .shuttle { display: none; }
+    .rail-line {
+      top: 0; bottom: 0; left: 7px; right: auto;
+      width: 1px; height: auto;
+      background: linear-gradient(180deg, transparent, var(--line-strong) 4%, var(--line-strong) 96%, transparent);
+    }
+    .stations { grid-template-columns: 1fr; gap: 1.6rem; }
+    .station a { padding-left: 2rem; padding-right: 0; }
+    .node { position: absolute; left: 0; margin-bottom: 0; }
+    .station { position: relative; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .shuttle, .token { animation: none; }
+  }
+</style>

@@ -1,0 +1,106 @@
+---
+const cols = [
+  {
+    title: "Packages",
+    links: [
+      { label: "apairo", href: "https://github.com/apairo-robotics/apairo" },
+      { label: "apairo_extractor", href: "https://github.com/apairo-robotics/apairo_extractor" },
+      { label: "apairo_transform", href: "https://github.com/apairo-robotics/apairo_transform" },
+      { label: "apairo_preprocess", href: "https://github.com/apairo-robotics/apairo_preprocess" },
+      { label: "apairo_rr", href: "https://github.com/apairo-robotics/apairo_rr" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Documentation", href: "https://apairo-robotics.github.io/apairo/" },
+      { label: "PyPI", href: "https://pypi.org/project/apairo/" },
+      { label: "GitHub org", href: "https://github.com/apairo-robotics" },
+    ],
+  },
+];
+---
+
+<footer class="footer">
+  <hr class="rule" />
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="/" aria-label="apairo — home">
+        <img src="/assets/apairo_mark.svg" alt="" width="34" height="34" />
+        <span class="brand-word">apairo</span>
+      </a>
+      <p class="footer-tag">The open robotics sensor-data stack.</p>
+      <p class="footer-meta mono">MIT licensed · numpy-native · Python ≥ 3.11</p>
+    </div>
+
+    {cols.map((c) => (
+      <nav class="footer-col" aria-label={c.title}>
+        <p class="footer-h mono">{c.title}</p>
+        <ul>
+          {c.links.map((l) => (
+            <li><a href={l.href} target="_blank" rel="noopener">{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    ))}
+  </div>
+
+  <div class="wrap footer-base mono">
+    <span>© {new Date().getFullYear()} apairo-robotics</span>
+    <span class="footer-spark">made for robots that have to read the ground ◦</span>
+  </div>
+</footer>
+
+<style>
+  .footer { padding-top: clamp(3rem, 7vw, 5rem); padding-bottom: 2.5rem; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    padding-top: clamp(2.5rem, 6vw, 4rem);
+  }
+  .brand { display: inline-flex; align-items: center; gap: 0.55rem; }
+  .brand-word {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .footer-tag { margin-top: 1rem; color: var(--ink-2); max-width: 30ch; }
+  .footer-meta { margin-top: 0.7rem; font-size: 0.72rem; color: var(--steel); letter-spacing: 0.04em; }
+
+  .footer-h {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--steel);
+    margin-bottom: 1.1rem;
+  }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.65rem; }
+  .footer-col a {
+    color: var(--ink-2);
+    font-size: 0.9rem;
+    transition: color 0.25s var(--ease);
+    position: relative;
+  }
+  .footer-col a:hover { color: var(--spark-ink); }
+
+  .footer-base {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line-soft);
+    font-size: 0.72rem;
+    color: var(--steel);
+    letter-spacing: 0.03em;
+  }
+  .footer-spark { color: var(--steel); }
+
+  @media (max-width: 760px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+</style>

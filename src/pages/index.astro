@@ -1,0 +1,125 @@
+---
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Flow from "../components/Flow.astro";
+import Packages from "../components/Packages.astro";
+import Quickstart from "../components/Quickstart.astro";
+import Footer from "../components/Footer.astro";
+
+const title = "apairo — the open robotics sensor-data stack";
+const description =
+  "apairo is an open, modular Python toolkit for robotics sensor data — one numpy-native API to extract, load, transform, preprocess and visualise LiDAR, images and trajectories across datasets.";
+const url = "https://apairo-robotics.github.io/";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f6f4ef" />
+    <link rel="canonical" href={url} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={`${url}assets/apairo_logo_full.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Fonts: Fraunces (display) · Hanken Grotesk (body) · JetBrains Mono (chrome) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,380;9..144,430;9..144,500&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <a class="skip" href="#stack">Skip to content</a>
+    <Nav />
+    <main>
+      <Hero />
+      <Flow />
+      <Packages />
+      <Quickstart />
+    </main>
+    <Footer />
+
+    <style>
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 0.7rem 1.1rem;
+        border-radius: 0 0 8px 0;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        z-index: 100;
+      }
+      .skip:focus { left: 0; }
+      main { display: block; }
+    </style>
+
+    <script>
+      // 1 · Nav border once the page is scrolled
+      const nav = document.querySelector("[data-nav]");
+      const onScroll = () => {
+        if (!nav) return;
+        if (window.scrollY > 8) nav.setAttribute("data-scrolled", "");
+        else nav.removeAttribute("data-scrolled");
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      // 2 · Reveal-on-scroll with a gentle per-group stagger
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const revealed = document.querySelectorAll("[data-reveal]");
+      if (reduce || !("IntersectionObserver" in window)) {
+        revealed.forEach((el) => el.classList.add("in"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+        );
+        revealed.forEach((el) => io.observe(el));
+      }
+
+      // 3 · Copy-to-clipboard for install commands
+      document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const text = btn.getAttribute("data-copy") || "";
+          try {
+            await navigator.clipboard.writeText(text);
+            const prev = btn.textContent;
+            btn.setAttribute("data-done", "");
+            btn.textContent = "copied";
+            setTimeout(() => {
+              btn.removeAttribute("data-done");
+              btn.textContent = prev;
+            }, 1400);
+          } catch {
+            /* clipboard unavailable — no-op */
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
