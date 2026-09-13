@@ -4,27 +4,32 @@ import { Code } from "astro:components";
 const snippet = `import apairo
 from apairo_transform import RangeFilter, RandomSubsample
 
-# 1 · Load — one API across every dataset
-ds = apairo.Rellis3DDataset(
-    "/data/RELLIS-3D",
-    keys=["lidar", "labels"],
+# 1 · Load — any folder apairo has profiled
+ds = apairo.RawDataset(
+    "/data/field_run_01",
+    keys=["lidar", "imu", "cmd"],
 )
 
-# 2 · Transform — lazy, on access, nothing written to disk
-ds.transform("lidar", RangeFilter(max=50.0))
-ds.transform("lidar", RandomSubsample(8192))
+# 2 · Sync — multi-rate sensors onto the lidar clock
+view = ds.synchronize(
+    reference="lidar", method="nearest", tolerance=0.05
+)
 
-# 3 · Use — plain numpy, ready for any framework
-sample = ds[0]
-sample.data["lidar"]    # ndarray (N, 4)  ·  x y z intensity
-sample.data["labels"]   # ndarray (N,)    ·  int64
+# 3 · Transform — lazy, on access, nothing written to disk
+view.transform("lidar", RangeFilter(max=50.0))
+view.transform("lidar", RandomSubsample(1024))
+
+# 4 · Use — plain numpy, ready for any framework
+sample = view[0]
+sample.data["lidar"]   # ndarray (1024, 4)  float32
+sample.data["imu"]     # ndarray (6,)       float64
 `;
 ---
 
 <section id="quickstart" class="section quickstart">
   <div class="wrap qs-grid">
     <div class="qs-copy" data-reveal>
-      <p class="eyebrow">03 / Quickstart</p>
+      <p class="eyebrow">04 / Quickstart</p>
       <h2>Loaded and training in a&nbsp;dozen lines.</h2>
       <p class="qs-lede">
         The core ships on PyPI. Add only the layers you need — every package
@@ -33,7 +38,8 @@ sample.data["labels"]   # ndarray (N,)    ·  int64
       </p>
 
       <ol class="qs-steps mono">
-        <li><span>Load</span> any supported dataset behind one class.</li>
+        <li><span>Load</span> any profiled folder — or a built-in dataset class.</li>
+        <li><span>Sync</span> sensors running at different rates onto one clock.</li>
         <li><span>Transform</span> lazily — augment on access, leave disk untouched.</li>
         <li><span>Use</span> raw arrays in PyTorch, JAX, anything.</li>
       </ol>
@@ -51,7 +57,7 @@ sample.data["labels"]   # ndarray (N,)    ·  int64
         <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="code-file">quickstart.py</span>
       </div>
-      <div class="code-body">
+      <div class="code-body code-tokens">
         <Code code={snippet} lang="python" theme="css-variables" />
       </div>
     </div>
@@ -99,6 +105,7 @@ sample.data["labels"]   # ndarray (N,)    ·  int64
 
   /* code card */
   .qs-code {
+    min-width: 0;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
@@ -123,33 +130,13 @@ sample.data["labels"]   # ndarray (N,)    ·  int64
   .code-file { font-size: 0.72rem; color: var(--steel); letter-spacing: 0.05em; }
 
   .code-body {
-    /* Shiki "css-variables" theme — remapped to the brand palette */
-    --astro-code-color-background: transparent;
-    --astro-code-color-text: var(--ink);
-    --astro-code-token-comment: var(--steel-soft);
-    --astro-code-token-keyword: var(--spark-ink);
-    --astro-code-token-string: #5d7460;
-    --astro-code-token-string-expression: #5d7460;
-    --astro-code-token-function: var(--ink-2);
-    --astro-code-token-constant: var(--spark-ink);
-    --astro-code-token-number: var(--spark-ink);
-    --astro-code-token-parameter: var(--ink);
-    --astro-code-token-punctuation: var(--steel);
-    --astro-code-token-link: var(--spark-ink);
     padding: 1.3rem 1.4rem;
     overflow-x: auto;
   }
   .code-body :global(pre) {
-    margin: 0;
-    background: transparent !important;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     line-height: 1.75;
   }
-  .code-body :global(code) { font-family: var(--font-mono); }
-  .code-body :global(.line) { white-space: pre; }
-  /* comments in italic for that engineering-notebook feel */
-  .code-body :global(span[style*="comment"]) { font-style: italic; }
 
   @media (max-width: 820px) {
     .qs-grid { grid-template-columns: 1fr; }

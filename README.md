@@ -38,9 +38,11 @@ src/
 │   ├── Nav.astro
 │   ├── Hero.astro
 │   ├── Machinery.astro       # discreet encoder-wheel + gantry animation
-│   ├── Flow.astro            # the 5-package pipeline (assembly-line shuttle)
-│   ├── Packages.astro
+│   ├── Profile.astro         # apairo status / init / declare / check, real CLI output
+│   ├── Flow.astro            # the 7-stage pipeline (assembly-line shuttle)
+│   ├── Packages.astro        # core + satellites + the plugin slot
 │   ├── Quickstart.astro
+│   ├── Numbers.astro         # overhead figures from the core benchmarks
 │   └── Footer.astro
 └── styles/global.css         # design tokens + base
 public/assets/                # brand logo / mark

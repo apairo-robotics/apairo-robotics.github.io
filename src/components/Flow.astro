@@ -1,18 +1,22 @@
 ---
 const stages = [
-  { i: "01", verb: "Extract",    pkg: "apairo_extractor",  desc: "ROS bags → the .apairo layout",  href: "https://github.com/apairo-robotics/apairo_extractor" },
-  { i: "02", verb: "Load",       pkg: "apairo",            desc: "One numpy-native dataset API",    href: "https://github.com/apairo-robotics/apairo", core: true },
-  { i: "03", verb: "Transform",  pkg: "apairo_transform",  desc: "Lazy runtime augmentations",      href: "https://github.com/apairo-robotics/apairo_transform" },
-  { i: "04", verb: "Preprocess", pkg: "apairo_preprocess", desc: "Offline odometry & ground truth", href: "https://github.com/apairo-robotics/apairo_preprocess" },
-  { i: "05", verb: "Visualise",  pkg: "apairo_rr",         desc: "Inspect in the Rerun viewer",     href: "https://github.com/apairo-robotics/apairo_rr" },
+  { i: "01", verb: "Extract",    pkg: "apairo_extractor",   desc: "ROS 1 · ROS 2 · MCAP bags → .apairo", href: "https://github.com/apairo-robotics/apairo_extractor" },
+  { i: "02", verb: "Profile",    pkg: "apairo",             desc: "Every channel, in one command",       href: "#profile", core: true },
+  { i: "03", verb: "Load",       pkg: "apairo",             desc: "Sync & multi-rate, plain numpy",      href: "https://github.com/apairo-robotics/apairo", core: true },
+  { i: "04", verb: "Transform",  pkg: "apairo_transform",   desc: "Lazy runtime augmentations",          href: "https://github.com/apairo-robotics/apairo_transform" },
+  { i: "05", verb: "Preprocess", pkg: "apairo_preprocess",  desc: "Offline odometry & ground truth",     href: "https://github.com/apairo-robotics/apairo_preprocess" },
+  { i: "06", verb: "Visualise",  pkg: "apairo_visu",        desc: "Studio, Open3D & Rerun",              href: "https://github.com/apairo-robotics/apairo_visu" },
+  { i: "07", verb: "Share",      pkg: "apairo_huggingface", desc: "LeRobot datasets on the Hub",         href: "https://github.com/apairo-robotics/apairo_huggingface" },
 ];
+
+const isExternal = (href: string) => href.startsWith("http");
 ---
 
 <section id="stack" class="section flow">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">01 / The stack</p>
-      <h2>Five packages, one pipeline.</h2>
+      <p class="eyebrow">02 / The stack</p>
+      <h2>Six packages, one pipeline.</h2>
       <p>
         Each package does one thing well and snaps onto the next. Start anywhere —
         the <strong>apairo</strong> core is the only hard dependency.
@@ -26,7 +30,11 @@ const stages = [
       <ol class="stations">
         {stages.map((s) => (
           <li class={s.core ? "station station--core" : "station"}>
-            <a href={s.href} target="_blank" rel="noopener">
+            <a
+              href={s.href}
+              target={isExternal(s.href) ? "_blank" : undefined}
+              rel={isExternal(s.href) ? "noopener" : undefined}
+            >
               <span class="node" aria-hidden="true"><span class="dot"></span></span>
               <span class="st-index mono">{s.i}</span>
               <h3 class="st-verb">{s.verb}</h3>
@@ -46,20 +54,21 @@ const stages = [
 
   .track { position: relative; padding-top: 0.5rem; }
 
+  /* rail and token run through the node centres (track padding + half a node) */
   .rail-line {
     position: absolute;
     left: 0; right: 0;
-    top: 7px;
+    top: calc(0.5rem + 7px);
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--line-strong) 8%, var(--line-strong) 92%, transparent);
+    background: linear-gradient(90deg, transparent, var(--line-strong) 4%, var(--line-strong) 96%, transparent);
   }
 
   .shuttle {
     position: absolute;
-    top: 7px;
-    left: 10%;
+    top: calc(0.5rem + 7.5px);
+    left: 8px;
     width: 0; height: 0;
-    animation: shuttle 11s ease-in-out infinite alternate;
+    animation: shuttle 15s ease-in-out infinite alternate;
   }
   .token {
     position: absolute;
@@ -75,7 +84,7 @@ const stages = [
     list-style: none;
     margin: 0; padding: 0;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 0.5rem;
   }
   .station a {
@@ -83,7 +92,7 @@ const stages = [
     flex-direction: column;
     align-items: flex-start;
     gap: 0.18rem;
-    padding-right: 0.8rem;
+    padding-right: 0.6rem;
   }
 
   .node {
@@ -106,17 +115,19 @@ const stages = [
     border-color: var(--spark);
     width: 18px; height: 18px;
     box-shadow: 0 0 0 5px var(--spark-glow);
+    /* larger node, same centre and text baseline as its neighbours */
+    margin: -1.5px 0 calc(1.1rem - 1.5px) -1.5px;
   }
   .station--core .dot { background: var(--spark); }
 
   .st-index { font-size: 0.68rem; color: var(--steel); letter-spacing: 0.1em; }
   .st-verb {
-    font-size: 1.18rem;
+    font-size: 1.12rem;
     font-weight: 480;
     letter-spacing: -0.01em;
   }
   .st-pkg {
-    font-size: 0.74rem;
+    font-size: 0.7rem;
     color: var(--ink-2);
     word-break: break-word;
   }
@@ -125,10 +136,10 @@ const stages = [
     font-style: normal;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-size: 0.62rem;
+    font-size: 0.6rem;
   }
   .st-desc {
-    font-size: 0.85rem;
+    font-size: 0.83rem;
     color: var(--steel);
     line-height: 1.45;
     margin-top: 0.15rem;
@@ -141,24 +152,22 @@ const stages = [
   .station a { transition: transform 0.35s var(--ease); }
   .station a:hover { transform: translateY(-3px); }
 
+  /* The token rests on each node: column i starts at i·(100% + gap)/7. */
   @keyframes shuttle {
-    0%   { left: 10%; }
-    9%   { left: 10%; }
-    23%  { left: 30%; }
-    31%  { left: 30%; }
-    46%  { left: 50%; }
-    54%  { left: 50%; }
-    69%  { left: 70%; }
-    77%  { left: 70%; }
-    91%  { left: 90%; }
-    100% { left: 90%; }
+    0%, 6%         { left: calc((100% + 0.5rem) * 0 / 7 + 8px); }
+    15.67%, 21.67% { left: calc((100% + 0.5rem) * 1 / 7 + 8px); }
+    31.33%, 37.33% { left: calc((100% + 0.5rem) * 2 / 7 + 8px); }
+    47%, 53%       { left: calc((100% + 0.5rem) * 3 / 7 + 8px); }
+    62.67%, 68.67% { left: calc((100% + 0.5rem) * 4 / 7 + 8px); }
+    78.33%, 84.33% { left: calc((100% + 0.5rem) * 5 / 7 + 8px); }
+    94%, 100%      { left: calc((100% + 0.5rem) * 6 / 7 + 8px); }
   }
   @keyframes pulse {
     0%, 100% { transform: scale(1); opacity: 1; }
     50%      { transform: scale(1.35); opacity: 0.75; }
   }
 
-  @media (max-width: 860px) {
+  @media (max-width: 1020px) {
     .shuttle { display: none; }
     .rail-line {
       top: 0; bottom: 0; left: 7px; right: auto;

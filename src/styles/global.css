@@ -126,6 +126,31 @@ p { margin: 0; }
 
 .mono { font-family: var(--font-mono); }
 
+/* ---- Shiki "css-variables" theme, remapped to the brand palette ---- */
+.code-tokens {
+  --astro-code-color-background: transparent;
+  --astro-code-color-text: var(--ink);
+  --astro-code-token-comment: var(--steel-soft);
+  --astro-code-token-keyword: var(--spark-ink);
+  --astro-code-token-string: #5d7460;
+  --astro-code-token-string-expression: #5d7460;
+  --astro-code-token-function: var(--ink-2);
+  --astro-code-token-constant: var(--spark-ink);
+  --astro-code-token-number: var(--spark-ink);
+  --astro-code-token-parameter: var(--ink);
+  --astro-code-token-punctuation: var(--steel);
+  --astro-code-token-link: var(--spark-ink);
+}
+.code-tokens pre {
+  margin: 0;
+  background: transparent !important;
+  font-family: var(--font-mono);
+}
+.code-tokens code { font-family: var(--font-mono); }
+.code-tokens .line { white-space: pre; }
+/* comments in italic for that engineering-notebook feel */
+.code-tokens span[style*="comment"] { font-style: italic; }
+
 /* ---- buttons ---- */
 .btn {
   --b: var(--ink);

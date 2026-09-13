@@ -1,13 +1,17 @@
 ---
 const core = {
   name: "apairo",
-  role: "Core · dataset loader",
-  desc: "Unified Python loader for robotics sensor datasets — one API across synchronous and asynchronous layouts. Everything comes back as plain numpy arrays.",
+  role: "Core · profile, load, sync",
+  desc: "Unified Python loader for robotics sensor datasets — one API across synchronous and multi-rate asynchronous layouts. Profile a folder from the terminal, then read it where it lies: everything comes back as plain numpy arrays.",
   features: [
-    "RELLIS-3D · SemanticKITTI · GOOSE · TartanKitti",
-    "Views, caching & sequence filtering",
-    "Frames, calibration & transforms",
-    "CLI + YAML dataset profiles",
+    "apairo status · declare · check — profiling from the shell",
+    "RawDataset + apairo.yaml — any folder, zero writes",
+    "synchronize() — multi-rate rigs, tolerance, staleness",
+    "Lazy views — filter · split · join · concat · window · cache",
+    "Preprocess once — persisted, reloaded transparently",
+    "Calibration tree & camera intrinsics",
+    "npy · bin · img · zarr · pcd",
+    "SemanticKITTI · RELLIS-3D · GOOSE · TartanDrive 2.0",
   ],
   install: "pip install apairo",
   github: "https://github.com/apairo-robotics/apairo",
@@ -15,40 +19,61 @@ const core = {
   pypi: "https://pypi.org/project/apairo/",
 };
 
+const gh = (repo: string) => ({ label: "GitHub", href: `https://github.com/apairo-robotics/${repo}` });
+
 const satellites = [
   {
     i: "02",
     name: "apairo_extractor",
     role: "Ingest",
-    desc: "Turn ROS bags into an apairo-native dataset — interactive TUI, KITTI-style .apairo layout, /tf handling and per-channel frame ids.",
-    features: ["Interactive TUI", "KITTI layout · Zarr (WIP)", "/tf & /tf_static aware"],
-    github: "https://github.com/apairo-robotics/apairo_extractor",
+    desc: "Turn ROS bags into an apairo-native dataset. List every bag's duration, message counts and topic coverage first, then extract in parallel — from an interactive TUI or headless.",
+    features: ["ROS 1 · ROS 2 · MCAP", "Bag & topic coverage report (-l)", "/tf → poses · /tf_static → calibration"],
+    links: [gh("apairo_extractor")],
   },
   {
     i: "03",
     name: "apairo_transform",
     role: "Runtime",
-    desc: "Transforms & augmentations applied lazily at access time — nothing written to disk, numpy-only, no heavy dependencies.",
-    features: ["Range · Subsample · Voxel", "AccumulateFrames (temporal)", "Compose on any dataset"],
-    github: "https://github.com/apairo-robotics/apairo_transform",
+    desc: "Transforms and augmentations applied lazily at access time — nothing written to disk, no heavy dependencies.",
+    features: ["Range · Height · Voxel · Subsample", "Rotate · Flip · Scale · Noise · Point drop", "SE(3) & linear interpolation for synchronize()"],
+    links: [gh("apairo_transform")],
   },
   {
     i: "04",
     name: "apairo_preprocess",
     role: "Offline",
-    desc: "Offline pipelines for LiDAR odometry, ground segmentation and traversability ground-truth generation.",
-    features: ["KISS-ICP / GICP odometry", "CSF · RANSAC · TerraSeg", "Voxelisation & priors"],
-    github: "https://github.com/apairo-robotics/apairo_preprocess",
+    desc: "Offline pipelines that compute a derived channel once and persist it: LiDAR odometry, ground segmentation, traversability ground truth and learned semantic labels.",
+    features: ["KISS-ICP · GICP odometry", "CSF · RANSAC · TerraSeg ground", "SPVNAS · PTv3 · Pointcept labels"],
+    links: [gh("apairo_preprocess")],
   },
   {
     i: "05",
-    name: "apairo_rr",
+    name: "apairo_visu",
     role: "Visualise",
-    desc: "Rerun visualisation layer for clouds, semantic labels and trajectories — side-by-side pipelines, sequence-aware navigation.",
-    features: ["Rerun viewer", "Side-by-side pipelines", "Any apairo dataset"],
-    github: "https://github.com/apairo-robotics/apairo_rr",
+    desc: "Look at any dataset three ways — a browser Studio workbench, an Open3D viewer or Rerun — and draw your whole pipeline as a graph.",
+    features: ["apairo studio — metrics, histograms, series", "Open3D viewer · Rerun (.rrd, web)", "Pipeline graph → Mermaid · SVG · HTML"],
+    links: [gh("apairo_visu")],
+  },
+  {
+    i: "06",
+    name: "apairo_huggingface",
+    role: "Share",
+    desc: "Publish apairo datasets as Hugging Face LeRobot datasets. A dry run validates every array against the feature schema before anything is written.",
+    features: ["LeRobotDataset export · push_to_hub", "Dry-run schema validation", "TartanDrive 2.0 bridge, live on the Hub"],
+    links: [
+      gh("apairo_huggingface"),
+      { label: "Dataset on the Hub", href: "https://huggingface.co/datasets/apairo-robotics/tartandrive_offroad" },
+    ],
   },
 ];
+
+const extend = {
+  name: "your_package",
+  role: "Extend",
+  desc: "Mechanisms live in the core, collections live in satellites. Register a subcommand and it shows up as apairo <tool> — exactly how extractor and studio plug in.",
+  snippet: `[project.entry-points."apairo.cli_plugins"]\nmytool = "my_package.cli:main"`,
+  href: "https://apairo-robotics.github.io/apairo/cli/#ecosystem-commands",
+};
 
 const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 ---
@@ -56,7 +81,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
 <section id="packages" class="section packages">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">02 / Packages</p>
+      <p class="eyebrow">03 / Packages</p>
       <h2>The pieces, up close.</h2>
       <p>Pick the layers you need. They share one data model, so they always agree on what a frame is.</p>
     </div>
@@ -70,6 +95,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
           <p class="card-role mono">{core.role}</p>
         </header>
         <p class="card-desc">{core.desc}</p>
+        <code class="card-install mono">{core.install}</code>
         <div class="card-links mono">
           <a href={core.github} target="_blank" rel="noopener">GitHub <Fragment set:html={ext} /></a>
           <a href={core.docs} target="_blank" rel="noopener">Docs <Fragment set:html={ext} /></a>
@@ -80,7 +106,6 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
         <ul class="feat">
           {core.features.map((f) => <li>{f}</li>)}
         </ul>
-        <code class="card-install mono">{core.install}</code>
       </div>
     </article>
 
@@ -98,10 +123,25 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
             {p.features.map((f) => <li>{f}</li>)}
           </ul>
           <div class="card-links mono">
-            <a href={p.github} target="_blank" rel="noopener">GitHub <Fragment set:html={ext} /></a>
+            {p.links.map((l) => (
+              <a href={l.href} target="_blank" rel="noopener">{l.label} <Fragment set:html={ext} /></a>
+            ))}
           </div>
         </article>
       ))}
+
+      <article class="card card--extend" data-reveal style={`--delay:${80 + satellites.length * 70}ms`}>
+        <span class="card-index mono">+</span>
+        <header>
+          <h3 class="card-name mono">{extend.name}</h3>
+          <p class="card-role mono">{extend.role}</p>
+        </header>
+        <p class="card-desc">{extend.desc}</p>
+        <pre class="card-snippet mono"><code>{extend.snippet}</code></pre>
+        <div class="card-links mono">
+          <a href={extend.href} target="_blank" rel="noopener">Plugin guide <Fragment set:html={ext} /></a>
+        </div>
+      </article>
     </div>
   </div>
 </section>
@@ -113,6 +153,9 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 1.8rem 1.7rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
     transition: border-color 0.4s var(--ease), transform 0.4s var(--ease),
                 box-shadow 0.4s var(--ease), background 0.4s var(--ease);
   }
@@ -204,8 +247,10 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
 
   .card-links {
     display: flex;
-    gap: 1.3rem;
-    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.3rem;
+    margin-top: auto;
+    padding-top: 1.5rem;
     font-size: 0.78rem;
   }
   .card-links a {
@@ -234,7 +279,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
   /* core card layout */
   .card--core {
     display: grid;
-    grid-template-columns: 1.3fr 1fr;
+    grid-template-columns: 1.15fr 1fr;
     gap: clamp(1.5rem, 4vw, 3rem);
     padding: 2.2rem 2.1rem;
     margin-bottom: 1.4rem;
@@ -244,7 +289,28 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
   }
   .card--core .card-index { color: var(--spark-ink); }
   .card--core .card-name { font-size: 1.4rem; }
+  .core-main { display: flex; flex-direction: column; }
   .core-aside { display: flex; flex-direction: column; justify-content: center; }
+  .card--core .feat { margin-top: 0; gap: 0.62rem; }
+
+  /* the open slot: a satellite you write */
+  .card--extend {
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--line-strong);
+  }
+  .card--extend .card-index { color: var(--spark-ink); font-size: 0.9rem; }
+  .card-snippet {
+    margin: 1.2rem 0 0;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.8rem 0.95rem;
+    font-size: 0.74rem;
+    line-height: 1.7;
+    color: var(--ink-2);
+    overflow-x: auto;
+  }
 
   .grid {
     display: grid;

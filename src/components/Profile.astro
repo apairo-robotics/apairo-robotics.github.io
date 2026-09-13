@@ -1,0 +1,318 @@
+---
+import { Code } from "astro:components";
+
+// Verbatim output of apairo 0.8.0 on an extractor-style sequence
+// (four channels at 10 / 20 / 50 / 100 Hz, ouster_points aliased as lidar).
+type Line = { k: "cmd" | "head" | "rule" | "row" | "ok"; t: string };
+const session: Line[] = [
+  { k: "cmd",  t: "apairo status field_run_01" },
+  { k: "head", t: "RawDataset - field_run_01   (sequence)" },
+  { k: "rule", t: "----------------------------------------------------" },
+  { k: "head", t: "start       1726234567.00s   (span shown relative to this)" },
+  { k: "head", t: "channel                kind  loader  frames  rate      span         shape" },
+  { k: "row",  t: "cmd                    raw   npy     360     20.0 Hz   0.02-17.97s  (2) float32" },
+  { k: "row",  t: "imu                    raw   npy     1800    100.0 Hz  0.00-17.99s  (6) float64" },
+  { k: "row",  t: "odom                   raw   npy     900     50.0 Hz   0.01-17.99s  (7) float64" },
+  { k: "row",  t: "lidar (ouster_points)  raw   npys    180     10.0 Hz   0.03-17.93s  (2048, 4) float32" },
+  { k: "row",  t: "events      3240" },
+  { k: "ok",   t: "issues      none" },
+  { k: "cmd",  t: "apairo check field_run_01" },
+  { k: "ok",   t: "OK -- no issues" },
+];
+
+const steps = [
+  {
+    i: "01",
+    verb: "Profile",
+    cmd: "apairo status",
+    desc: "Frames, rate, time span, shape and dtype for every channel — read from timestamps and file headers, no data loaded. On a dataset root, <code>--missing</code> shows which sequences lack which channels.",
+  },
+  {
+    i: "02",
+    verb: "Register",
+    cmd: "apairo init",
+    desc: "Detects each channel's loader — npy, bin, img, zarr, pcd — and records it under <code>.apairo/</code>. Idempotent, and it never rewrites your data.",
+  },
+  {
+    i: "03",
+    verb: "Declare",
+    cmd: "apairo declare",
+    desc: "Scaffolds an <code>apairo.yaml</code>: aliases, field lists, clocks parsed straight from filenames. A file you own and version in git.",
+  },
+  {
+    i: "04",
+    verb: "Validate",
+    cmd: "apairo check",
+    desc: "Schema validation that exits 1 on any issue, with <code>--json</code> output. Drops straight into CI.",
+  },
+];
+
+const declaration = `# apairo declaration -- how to read this dataset.
+# This file is yours: apairo reads it and never edits it.
+version: 1
+channels:
+  ouster_points:
+    loader: npys
+    alias: lidar                        # public name
+    key: {name: '(\\d+)$', units: [ns]}  # clock from filenames
+`;
+
+const studio = [
+  "Frame metrics for every channel",
+  "Histograms, series charts and frame listings",
+  "3D point clouds, BEV scatter and images",
+  "The whole pipeline as a clickable graph",
+];
+
+const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+<section id="profile" class="section profile">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">01 / Profile</p>
+      <h2>Profile any dataset in <span class="serif-it">one&nbsp;command</span>.</h2>
+      <p>
+        Point apairo at a folder of sensor data and it tells you what is inside:
+        every channel, its frame count, rate, time span, shape and dtype. Nothing is
+        loaded into memory, and nothing in your data is rewritten.
+      </p>
+    </div>
+
+    <div class="term" data-reveal style="--delay: 100ms">
+      <div class="term-bar mono">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="term-title">~/data — apairo 0.8</span>
+      </div>
+      <pre class="term-body mono"><code>{session.map((l) => (
+        <span class={`ln ln--${l.k}`}>{l.k === "cmd" && <span class="ps">$ </span>}{l.t}</span>
+      ))}</code></pre>
+    </div>
+
+    <ol class="pf-steps">
+      {steps.map((s, idx) => (
+        <li class="pf-step" data-reveal style={`--delay:${140 + idx * 70}ms`}>
+          <span class="pf-index mono">{s.i}</span>
+          <h3>{s.verb}</h3>
+          <code class="pf-cmd mono">{s.cmd}</code>
+          <p set:html={s.desc} />
+        </li>
+      ))}
+    </ol>
+
+    <div class="pf-more">
+      <article class="pf-card" data-reveal>
+        <p class="pf-card-k mono">apairo declare</p>
+        <h3>Describe it once, in a file you own.</h3>
+        <p class="pf-card-desc">
+          The scaffold fills in every loader it detects and guesses clocks from
+          filenames — here a 19-digit nanosecond epoch. apairo reads
+          <code>apairo.yaml</code> and never writes it; for a read-only mount, keep it
+          elsewhere and pass <code>declare=</code>.
+        </p>
+        <div class="pf-code code-tokens">
+          <Code code={declaration} lang="yaml" theme="css-variables" />
+        </div>
+      </article>
+
+      <article class="pf-card" data-reveal style="--delay: 90ms">
+        <p class="pf-card-k mono">apairo studio · apairo_visu</p>
+        <h3>Then look closer, in the browser.</h3>
+        <p class="pf-card-desc">
+          With <strong>apairo_visu</strong> installed, the same folder opens in Studio:
+          a panel workbench driven by one frame slider, synchronised on the channel
+          of your choice.
+        </p>
+        <code class="pf-shell mono">apairo studio field_run_01 --sync lidar</code>
+        <ul class="pf-list">
+          {studio.map((f) => <li>{f}</li>)}
+        </ul>
+        <a class="pf-link mono" href="https://github.com/apairo-robotics/apairo_visu" target="_blank" rel="noopener">
+          apairo_visu on GitHub <Fragment set:html={ext} />
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .profile { padding-bottom: clamp(3.5rem, 8vw, 6rem); }
+  .serif-it { font-style: italic; font-weight: 430; }
+
+  /* ---- terminal ---- */
+  .term {
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    box-shadow: 0 40px 70px -45px rgba(35, 44, 54, 0.7);
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.7rem 1rem;
+    background: #2a343f;
+    border-bottom: 1px solid rgba(246, 244, 239, 0.07);
+  }
+  .dots { display: inline-flex; gap: 6px; }
+  .dots i {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: rgba(246, 244, 239, 0.18);
+  }
+  .dots i:first-child { background: var(--spark); }
+  .term-title { font-size: 0.72rem; color: var(--steel-soft); letter-spacing: 0.05em; }
+
+  .term-body {
+    margin: 0;
+    padding: 1.4rem 1.6rem 1.5rem;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    line-height: 1.75;
+    color: var(--paper-deep);
+  }
+  .ln { display: block; white-space: pre; }
+  .ln--cmd { color: var(--paper); font-weight: 500; }
+  .ln--cmd:not(:first-child) { margin-top: 0.9rem; }
+  .ps { color: var(--spark); }
+  .ln--head { color: var(--steel-soft); }
+  .ln--rule { color: rgba(147, 160, 171, 0.45); }
+  .ln--ok { color: #a9c2a0; }
+
+  /* ---- four steps ---- */
+  .pf-steps {
+    list-style: none;
+    margin: clamp(2.2rem, 5vw, 3.2rem) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.6rem;
+  }
+  .pf-step {
+    border-top: 1px solid var(--line-strong);
+    padding-top: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pf-index { font-size: 0.68rem; color: var(--spark-ink); letter-spacing: 0.1em; }
+  .pf-step h3 { font-size: 1.22rem; font-weight: 480; margin-top: 0.35rem; }
+  .pf-cmd {
+    margin-top: 0.6rem;
+    font-size: 0.76rem;
+    color: var(--ink);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.18em 0.55em;
+  }
+  .pf-step p {
+    margin-top: 0.75rem;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .pf-step p :global(code),
+  .pf-card-desc code {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    color: var(--ink);
+  }
+
+  /* ---- declare + studio ---- */
+  .pf-more {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.4rem;
+    margin-top: clamp(2.8rem, 6vw, 4.2rem);
+  }
+  .pf-card {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.8rem 1.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+  }
+  .pf-card-k { font-size: 0.72rem; color: var(--steel); letter-spacing: 0.06em; }
+  .pf-card h3 { font-size: clamp(1.3rem, 2.4vw, 1.55rem); margin-top: 0.5rem; }
+  .pf-card-desc { margin-top: 0.9rem; font-size: 0.95rem; line-height: 1.55; color: var(--ink-2); }
+  .pf-card-desc strong { font-weight: 600; }
+
+  .pf-code {
+    align-self: stretch;
+    margin-top: 1.3rem;
+    background: var(--paper);
+    border: 1px dashed var(--line-strong);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    overflow-x: auto;
+  }
+  .pf-code :global(pre) { font-size: 0.76rem; line-height: 1.7; }
+
+  .pf-shell {
+    align-self: stretch;
+    display: block;
+    margin-top: 1.3rem;
+    background: var(--paper);
+    border: 1px dashed var(--line-strong);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.8rem;
+    color: var(--ink);
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .pf-shell::before { content: "$ "; color: var(--spark-ink); }
+
+  .pf-list {
+    list-style: none;
+    margin: 1.2rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .pf-list li {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--ink-2);
+    padding-left: 1.1rem;
+    position: relative;
+    line-height: 1.4;
+  }
+  .pf-list li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.5em;
+    width: 5px; height: 5px;
+    background: var(--spark);
+    border-radius: 1px;
+    transform: rotate(45deg);
+  }
+
+  .pf-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    font-size: 0.78rem;
+    color: var(--ink);
+  }
+  .pf-link:hover { color: var(--spark-ink); }
+
+  @media (max-width: 960px) {
+    .pf-steps { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
+  }
+  @media (max-width: 820px) {
+    .pf-more { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .pf-steps { grid-template-columns: 1fr; }
+    .term-body { padding: 1.1rem 1.1rem 1.2rem; font-size: 0.74rem; }
+  }
+</style>

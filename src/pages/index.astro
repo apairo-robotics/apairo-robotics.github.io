@@ -2,14 +2,16 @@
 import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
+import Profile from "../components/Profile.astro";
 import Flow from "../components/Flow.astro";
 import Packages from "../components/Packages.astro";
 import Quickstart from "../components/Quickstart.astro";
+import Numbers from "../components/Numbers.astro";
 import Footer from "../components/Footer.astro";
 
 const title = "apairo — the open robotics sensor-data stack";
 const description =
-  "apairo is an open, modular Python toolkit for robotics sensor data — one numpy-native API to extract, load, transform, preprocess and visualise LiDAR, images and trajectories across datasets.";
+  "apairo is an open, modular Python toolkit for robotics sensor data — profile any dataset in one command, then extract, load, sync, transform, visualise and share LiDAR, images and trajectories through one numpy-native API.";
 const url = "https://apairo-robotics.github.io/";
 ---
 
@@ -44,13 +46,15 @@ const url = "https://apairo-robotics.github.io/";
   </head>
 
   <body>
-    <a class="skip" href="#stack">Skip to content</a>
+    <a class="skip" href="#profile">Skip to content</a>
     <Nav />
     <main>
       <Hero />
+      <Profile />
       <Flow />
       <Packages />
       <Quickstart />
+      <Numbers />
     </main>
     <Footer />
 

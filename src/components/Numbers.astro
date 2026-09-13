@@ -1,0 +1,118 @@
+---
+// Figures from the core repo's benchmarks/README.md (synthetic async multi-rate
+// sequence, 1024-point frames, against a sorted-glob + np.load + searchsorted baseline).
+const stats = [
+  { v: "1.00–1.09×", k: "per-frame access", d: "the cost of a hand-rolled np.load loader, from 200 to 5,000 frames" },
+  { v: "0.12 ms", k: "synchronize()", d: "over 5,000 frames — index math, not I/O" },
+  { v: "0.2 KB", k: "a filtered view", d: "flat in dataset size — index arrays, not copies" },
+  { v: "2", k: "runtime dependencies", d: "numpy and PyYAML. No torch import, no framework lock-in" },
+];
+
+const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+<section id="overhead" class="section numbers">
+  <div class="wrap">
+    <div class="nb-head" data-reveal>
+      <div class="section-head">
+        <p class="eyebrow">05 / Overhead</p>
+        <h2>No loading tax.</h2>
+        <p>
+          apairo reads the same bytes at the same throughput as a competent
+          hand-rolled loader — the abstraction is paid for in index arrays, not I/O.
+        </p>
+      </div>
+      <a class="nb-link mono" href="https://github.com/apairo-robotics/apairo_benchmarks" target="_blank" rel="noopener">
+        Benchmark harness <Fragment set:html={ext} />
+      </a>
+    </div>
+
+    <dl class="nb-grid">
+      {stats.map((s, idx) => (
+        <div class="nb" data-reveal style={`--delay:${idx * 70}ms`}>
+          <dt class="nb-k mono">{s.k}</dt>
+          <dd class="nb-v">{s.v}</dd>
+          <dd class="nb-d">{s.d}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <p class="nb-note mono" data-reveal>
+      Synthetic microbenchmark of the framework cost only — not real-world I/O, GPU or distributed loading.
+    </p>
+  </div>
+</section>
+
+<style>
+  .numbers { padding-top: 0; }
+
+  .nb-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem 3rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    padding-top: clamp(3.5rem, 8vw, 6rem);
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+  .nb-head .section-head { margin-bottom: 0; }
+
+  .nb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    font-size: 0.78rem;
+    color: var(--ink);
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--line);
+    transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+  }
+  .nb-link:hover { color: var(--spark-ink); border-color: var(--spark); }
+
+  .nb-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.6rem;
+  }
+  .nb {
+    border-top: 1px solid var(--line-strong);
+    padding-top: 1.1rem;
+  }
+  .nb-k {
+    font-size: 0.7rem;
+    color: var(--steel);
+    letter-spacing: 0.06em;
+  }
+  .nb-v {
+    margin: 0.5rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 4vw, 2.9rem);
+    font-weight: 430;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .nb-d {
+    margin: 0.8rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .nb-note {
+    margin-top: 2.2rem;
+    font-size: 0.7rem;
+    color: var(--steel);
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 900px) {
+    .nb-grid { grid-template-columns: repeat(2, 1fr); row-gap: 2.2rem; }
+  }
+  @media (max-width: 460px) {
+    .nb-grid { grid-template-columns: 1fr; }
+  }
+</style>

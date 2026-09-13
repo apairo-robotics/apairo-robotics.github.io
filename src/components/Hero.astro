@@ -13,16 +13,16 @@ import Machinery from "./Machinery.astro";
       </h1>
 
       <p class="lede" data-reveal style="--delay: 160ms">
-        <strong>apairo</strong> is an open, modular toolkit for robotics sensor data —
-        one numpy-native API to load, transform, preprocess and visualise LiDAR,
-        images and trajectories across datasets.
+        <strong>apairo</strong> is an open, modular toolkit for robotics sensor data.
+        Profile any dataset in one command, then load, sync, transform and visualise
+        LiDAR, images and trajectories through one numpy-native API.
       </p>
 
       <div class="hero-actions" data-reveal style="--delay: 240ms">
-        <a class="btn" href="#stack">
-          Explore the stack
-          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <a class="btn" href="#profile">
+          Profile a dataset
+          <svg class="arrow arrow--down" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
         <a class="btn btn--ghost" href="https://apairo-robotics.github.io/apairo/" target="_blank" rel="noopener">
@@ -31,9 +31,16 @@ import Machinery from "./Machinery.astro";
       </div>
 
       <div class="install" data-reveal style="--delay: 320ms">
-        <span class="install-prompt mono">$</span>
-        <code class="mono">pip install apairo</code>
-        <button class="install-copy mono" data-copy="pip install apairo" aria-label="Copy install command">copy</button>
+        <div class="install-row">
+          <span class="install-prompt mono">$</span>
+          <code class="mono">pip install apairo</code>
+          <button class="install-copy mono" data-copy="pip install apairo" aria-label="Copy install command">copy</button>
+        </div>
+        <div class="install-row">
+          <span class="install-prompt mono">$</span>
+          <code class="mono">apairo status ./my_dataset</code>
+          <span class="install-note mono"># profile it</span>
+        </div>
       </div>
     </div>
 
@@ -79,20 +86,33 @@ import Machinery from "./Machinery.astro";
     flex-wrap: wrap;
     gap: 0.8rem;
   }
+  .btn:hover .arrow--down { transform: translateY(3px); }
 
   .install {
     margin-top: 1.8rem;
     display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
+    flex-direction: column;
+    gap: 0.45rem;
     background: var(--paper-soft);
     border: 1px solid var(--line);
     border-radius: 10px;
     padding: 0.6rem 0.7rem 0.6rem 0.95rem;
     font-size: 0.9rem;
   }
+  .install-row {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 1.9rem;
+  }
   .install-prompt { color: var(--spark-ink); }
-  .install code { color: var(--ink); letter-spacing: -0.01em; }
+  .install code { color: var(--ink); letter-spacing: -0.01em; white-space: nowrap; }
+  .install-note {
+    white-space: nowrap;
+    margin-left: 0.3rem;
+    font-size: 0.74rem;
+    color: var(--steel);
+  }
   .install-copy {
     margin-left: 0.3rem;
     font-size: 0.68rem;
@@ -125,5 +145,9 @@ import Machinery from "./Machinery.astro";
     .hero-grid { grid-template-columns: 1fr; }
     .hero-machine { justify-self: start; align-items: flex-start; order: -1; max-width: 420px; }
     .machine-cap { align-self: flex-start; }
+  }
+  @media (max-width: 420px) {
+    .install { font-size: 0.8rem; }
+    .install-note { display: none; }
   }
 </style>
