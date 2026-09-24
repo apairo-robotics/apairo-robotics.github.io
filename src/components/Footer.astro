@@ -8,7 +8,6 @@ const cols = [
       { label: "apairo_transform", href: "https://github.com/apairo-robotics/apairo_transform" },
       { label: "apairo_preprocess", href: "https://github.com/apairo-robotics/apairo_preprocess" },
       { label: "apairo_visu", href: "https://github.com/apairo-robotics/apairo_visu" },
-      { label: "apairo_huggingface", href: "https://github.com/apairo-robotics/apairo_huggingface" },
     ],
   },
   {
@@ -19,7 +18,7 @@ const cols = [
       { label: "Bring your own dataset", href: "https://apairo-robotics.github.io/apairo/datasets/bring-your-own-dataset/" },
       { label: "Benchmarks", href: "https://github.com/apairo-robotics/apairo_benchmarks" },
       { label: "PyPI", href: "https://pypi.org/project/apairo/" },
-      { label: "Cite (Zenodo DOI)", href: "https://doi.org/10.5281/zenodo.22248230" },
+      { label: "Zenodo archive", href: "https://doi.org/10.5281/zenodo.22248230" },
     ],
   },
 ];
@@ -34,12 +33,12 @@ const cols = [
         <span class="brand-word">apairo</span>
       </a>
       <p class="footer-tag">The open robotics sensor-data stack.</p>
-      <p class="footer-meta mono">MIT licensed · numpy-native · Python ≥ 3.11</p>
+      <p class="footer-meta">Developed at U2IS, ENSTA, Institut Polytechnique de Paris.</p>
     </div>
 
     {cols.map((c) => (
       <nav class="footer-col" aria-label={c.title}>
-        <p class="footer-h mono">{c.title}</p>
+        <p class="footer-h">{c.title}</p>
         <ul>
           {c.links.map((l) => (
             <li><a href={l.href} target="_blank" rel="noopener">{l.label}</a></li>
@@ -49,9 +48,9 @@ const cols = [
     ))}
   </div>
 
-  <div class="wrap footer-base mono">
+  <div class="wrap footer-base">
     <span>© {new Date().getFullYear()} apairo-robotics</span>
-    <span class="footer-spark">made for robots that have to read the ground ◦</span>
+    <span>MIT licence</span>
   </div>
 </footer>
 
@@ -71,12 +70,13 @@ const cols = [
     letter-spacing: -0.02em;
   }
   .footer-tag { margin-top: 1rem; color: var(--ink-2); max-width: 30ch; }
-  .footer-meta { margin-top: 0.7rem; font-size: 0.72rem; color: var(--steel); letter-spacing: 0.04em; }
+  .footer-meta { margin-top: 0.7rem; font-size: 0.85rem; color: var(--steel); max-width: 36ch; }
 
   .footer-h {
-    font-size: 0.68rem;
+    font-size: 0.78rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.08em;
     color: var(--steel);
     margin-bottom: 1.1rem;
   }
@@ -87,7 +87,7 @@ const cols = [
     transition: color 0.25s var(--ease);
     position: relative;
   }
-  .footer-col a:hover { color: var(--spark-ink); }
+  .footer-col a:hover { color: var(--ink); }
 
   .footer-base {
     display: flex;
@@ -97,11 +97,9 @@ const cols = [
     margin-top: clamp(2.5rem, 6vw, 4rem);
     padding-top: 1.4rem;
     border-top: 1px solid var(--line-soft);
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     color: var(--steel);
-    letter-spacing: 0.03em;
   }
-  .footer-spark { color: var(--steel); }
 
   @media (max-width: 760px) {
     .footer-grid { grid-template-columns: 1fr 1fr; }

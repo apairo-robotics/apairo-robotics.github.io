@@ -9,8 +9,8 @@ Served at the org root: **https://apairo-robotics.github.io/**
 ## Stack
 
 - [Astro](https://astro.build) — static build, near-zero client JS
-- Hand-authored SVG + CSS for the "machining" motif (no animation libraries)
-- Fonts: Fraunces (display) · Hanken Grotesk (body) · JetBrains Mono (chrome)
+- Hero figure: a RELLIS-3D LiDAR map rendered offline (no animation libraries)
+- Fonts: Fraunces (display) · Hanken Grotesk (body) · JetBrains Mono (code)
 
 ## Develop
 
@@ -36,14 +36,13 @@ src/
 ├── pages/index.astro        # page shell, <head>, client scripts
 ├── components/
 │   ├── Nav.astro
-│   ├── Hero.astro
-│   ├── Machinery.astro       # discreet encoder-wheel + gantry animation
+│   ├── Hero.astro            # headline, install, RELLIS-3D LiDAR map figure
 │   ├── Profile.astro         # apairo status / init / declare / check, real CLI output
-│   ├── Flow.astro            # the 7-stage pipeline (assembly-line shuttle)
-│   ├── Packages.astro        # core + satellites + the plugin slot
+│   ├── Packages.astro        # pipeline order + core + satellites + the plugin slot
 │   ├── Quickstart.astro
 │   ├── Numbers.astro         # overhead figures from the core benchmarks
+│   ├── Cite.astro            # BibTeX + DOI, mirrors apairo/CITATION.cff
 │   └── Footer.astro
 └── styles/global.css         # design tokens + base
-public/assets/                # brand logo / mark
+public/assets/                # brand logo / mark, hero-rellis.webp
 ```

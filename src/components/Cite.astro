@@ -1,0 +1,129 @@
+---
+// Mirrors apairo/CITATION.cff — keep the two in step on each release.
+const bibtex = `@software{bresset_apairo_2026,
+  author  = {Bresset, Augustin},
+  title   = {apairo: a unified loader for robotics sensor datasets},
+  year    = {2026},
+  version = {0.8.0},
+  doi     = {10.5281/zenodo.22248230},
+  url     = {https://github.com/apairo-robotics/apairo},
+  license = {MIT}
+}`;
+
+const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+<section id="cite" class="section cite">
+  <div class="wrap cite-grid">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Cite</p>
+      <h2>Using apairo in your research?</h2>
+      <p>
+        Please cite the archived release. The DOI below always resolves to the
+        latest version on Zenodo.
+      </p>
+
+      <dl class="cite-meta">
+        <div>
+          <dt>Author</dt>
+          <dd>
+            Augustin Bresset
+            <a href="https://orcid.org/0009-0001-1994-7136" target="_blank" rel="noopener">ORCID <Fragment set:html={ext} /></a>
+          </dd>
+        </div>
+        <div>
+          <dt>Affiliation</dt>
+          <dd>U2IS, ENSTA, Institut Polytechnique de Paris</dd>
+        </div>
+        <div>
+          <dt>DOI</dt>
+          <dd>
+            <a href="https://doi.org/10.5281/zenodo.22248230" target="_blank" rel="noopener">10.5281/zenodo.22248230 <Fragment set:html={ext} /></a>
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="bib" data-reveal style="--delay: 100ms">
+      <div class="bib-bar">
+        <span>BibTeX</span>
+        <button class="bib-copy" data-copy={bibtex} aria-label="Copy BibTeX entry">Copy</button>
+      </div>
+      <pre class="bib-body mono"><code>{bibtex}</code></pre>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cite { padding-top: 0; }
+  .cite-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+    border-top: 1px solid var(--line);
+    padding-top: clamp(3.5rem, 8vw, 6rem);
+  }
+  .cite .section-head { margin-bottom: 0; }
+
+  .cite-meta { margin: 1.8rem 0 0; display: grid; gap: 0.9rem; }
+  .cite-meta dt {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .cite-meta dd { margin: 0.15rem 0 0; color: var(--ink-2); }
+  .cite-meta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    margin-left: 0.4rem;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .cite-meta dd > a:only-child { margin-left: 0; }
+  .cite-meta a:hover { border-color: var(--ink); }
+
+  .bib {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-soft);
+    overflow: hidden;
+  }
+  .bib-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.7rem 0.55rem 1rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--steel);
+  }
+  .bib-copy {
+    font: inherit;
+    font-weight: 500;
+    color: var(--steel);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.2em 0.65em;
+    cursor: pointer;
+  }
+  .bib-copy:hover { color: var(--ink); border-color: var(--line-strong); }
+  .bib-body {
+    margin: 0;
+    padding: 1.1rem 1.2rem;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--ink);
+    overflow-x: auto;
+  }
+
+  @media (max-width: 820px) {
+    .cite-grid { grid-template-columns: 1fr; }
+  }
+</style>

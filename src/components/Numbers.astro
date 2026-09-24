@@ -15,14 +15,14 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
   <div class="wrap">
     <div class="nb-head" data-reveal>
       <div class="section-head">
-        <p class="eyebrow">05 / Overhead</p>
+        <p class="eyebrow">Overhead</p>
         <h2>No loading tax.</h2>
         <p>
           apairo reads the same bytes at the same throughput as a competent
           hand-rolled loader — the abstraction is paid for in index arrays, not I/O.
         </p>
       </div>
-      <a class="nb-link mono" href="https://github.com/apairo-robotics/apairo_benchmarks" target="_blank" rel="noopener">
+      <a class="nb-link" href="https://github.com/apairo-robotics/apairo_benchmarks" target="_blank" rel="noopener">
         Benchmark harness <Fragment set:html={ext} />
       </a>
     </div>
@@ -37,7 +37,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
       ))}
     </dl>
 
-    <p class="nb-note mono" data-reveal>
+    <p class="nb-note" data-reveal>
       Synthetic microbenchmark of the framework cost only — not real-world I/O, GPU or distributed loading.
     </p>
   </div>
@@ -62,13 +62,14 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     display: inline-flex;
     align-items: center;
     gap: 0.35em;
-    font-size: 0.78rem;
+    font-size: 0.88rem;
+    font-weight: 500;
     color: var(--ink);
     padding-bottom: 2px;
     border-bottom: 1px solid var(--line);
     transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
   }
-  .nb-link:hover { color: var(--spark-ink); border-color: var(--spark); }
+  .nb-link:hover { border-color: var(--ink); }
 
   .nb-grid {
     margin: 0;
@@ -104,7 +105,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
 
   .nb-note {
     margin-top: 2.2rem;
-    font-size: 0.7rem;
+    font-size: 0.82rem;
     color: var(--steel);
     letter-spacing: 0.02em;
   }

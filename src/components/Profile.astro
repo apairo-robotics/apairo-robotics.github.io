@@ -70,8 +70,8 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
 <section id="profile" class="section profile">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">01 / Profile</p>
-      <h2>Profile any dataset in <span class="serif-it">one&nbsp;command</span>.</h2>
+      <p class="eyebrow">Profile</p>
+      <h2>Profile any dataset in one&nbsp;command.</h2>
       <p>
         Point apairo at a folder of sensor data and it tells you what is inside:
         every channel, its frame count, rate, time span, shape and dtype. Nothing is
@@ -81,7 +81,6 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
 
     <div class="term" data-reveal style="--delay: 100ms">
       <div class="term-bar mono">
-        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="term-title">~/data — apairo 0.8</span>
       </div>
       <pre class="term-body mono"><code>{session.map((l) => (
@@ -92,7 +91,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     <ol class="pf-steps">
       {steps.map((s, idx) => (
         <li class="pf-step" data-reveal style={`--delay:${140 + idx * 70}ms`}>
-          <span class="pf-index mono">{s.i}</span>
+          <span class="pf-index">{s.i}</span>
           <h3>{s.verb}</h3>
           <code class="pf-cmd mono">{s.cmd}</code>
           <p set:html={s.desc} />
@@ -102,7 +101,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
 
     <div class="pf-more">
       <article class="pf-card" data-reveal>
-        <p class="pf-card-k mono">apairo declare</p>
+        <p class="pf-card-k">apairo declare</p>
         <h3>Describe it once, in a file you own.</h3>
         <p class="pf-card-desc">
           The scaffold fills in every loader it detects and guesses clocks from
@@ -116,7 +115,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
       </article>
 
       <article class="pf-card" data-reveal style="--delay: 90ms">
-        <p class="pf-card-k mono">apairo studio · apairo_visu</p>
+        <p class="pf-card-k">apairo studio · apairo_visu</p>
         <h3>Then look closer, in the browser.</h3>
         <p class="pf-card-desc">
           With <strong>apairo_visu</strong> installed, the same folder opens in Studio:
@@ -127,7 +126,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
         <ul class="pf-list">
           {studio.map((f) => <li>{f}</li>)}
         </ul>
-        <a class="pf-link mono" href="https://github.com/apairo-robotics/apairo_visu" target="_blank" rel="noopener">
+        <a class="pf-link" href="https://github.com/apairo-robotics/apairo_visu" target="_blank" rel="noopener">
           apairo_visu on GitHub <Fragment set:html={ext} />
         </a>
       </article>
@@ -137,7 +136,6 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
 
 <style>
   .profile { padding-bottom: clamp(3.5rem, 8vw, 6rem); }
-  .serif-it { font-style: italic; font-weight: 430; }
 
   /* ---- terminal ---- */
   .term {
@@ -145,7 +143,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     overflow: hidden;
     background: var(--ink);
     border: 1px solid var(--ink);
-    box-shadow: 0 40px 70px -45px rgba(35, 44, 54, 0.7);
+    box-shadow: 0 24px 48px -36px rgba(35, 44, 54, 0.55);
   }
   .term-bar {
     display: flex;
@@ -155,13 +153,6 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     background: #2a343f;
     border-bottom: 1px solid rgba(246, 244, 239, 0.07);
   }
-  .dots { display: inline-flex; gap: 6px; }
-  .dots i {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: rgba(246, 244, 239, 0.18);
-  }
-  .dots i:first-child { background: var(--spark); }
   .term-title { font-size: 0.72rem; color: var(--steel-soft); letter-spacing: 0.05em; }
 
   .term-body {
@@ -175,7 +166,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
   .ln { display: block; white-space: pre; }
   .ln--cmd { color: var(--paper); font-weight: 500; }
   .ln--cmd:not(:first-child) { margin-top: 0.9rem; }
-  .ps { color: var(--spark); }
+  .ps { color: var(--steel-soft); }
   .ln--head { color: var(--steel-soft); }
   .ln--rule { color: rgba(147, 160, 171, 0.45); }
   .ln--ok { color: #a9c2a0; }
@@ -196,7 +187,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     flex-direction: column;
     align-items: flex-start;
   }
-  .pf-index { font-size: 0.68rem; color: var(--spark-ink); letter-spacing: 0.1em; }
+  .pf-index { font-size: 0.78rem; font-weight: 600; color: var(--steel); }
   .pf-step h3 { font-size: 1.22rem; font-weight: 480; margin-top: 0.35rem; }
   .pf-cmd {
     margin-top: 0.6rem;
@@ -237,7 +228,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     align-items: flex-start;
     min-width: 0;
   }
-  .pf-card-k { font-size: 0.72rem; color: var(--steel); letter-spacing: 0.06em; }
+  .pf-card-k { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--steel); }
   .pf-card h3 { font-size: clamp(1.3rem, 2.4vw, 1.55rem); margin-top: 0.5rem; }
   .pf-card-desc { margin-top: 0.9rem; font-size: 0.95rem; line-height: 1.55; color: var(--ink-2); }
   .pf-card-desc strong { font-weight: 600; }
@@ -246,8 +237,8 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     align-self: stretch;
     margin-top: 1.3rem;
     background: var(--paper);
-    border: 1px dashed var(--line-strong);
-    border-radius: 8px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
     padding: 0.9rem 1rem;
     overflow-x: auto;
   }
@@ -258,15 +249,15 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     display: block;
     margin-top: 1.3rem;
     background: var(--paper);
-    border: 1px dashed var(--line-strong);
-    border-radius: 8px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
     padding: 0.7rem 0.9rem;
     font-size: 0.8rem;
     color: var(--ink);
     overflow-x: auto;
     white-space: nowrap;
   }
-  .pf-shell::before { content: "$ "; color: var(--spark-ink); }
+  .pf-shell::before { content: "$ "; color: var(--steel); }
 
   .pf-list {
     list-style: none;
@@ -277,8 +268,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     gap: 0.5rem;
   }
   .pf-list li {
-    font-family: var(--font-mono);
-    font-size: 0.76rem;
+    font-size: 0.88rem;
     color: var(--ink-2);
     padding-left: 1.1rem;
     position: relative;
@@ -287,11 +277,10 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
   .pf-list li::before {
     content: "";
     position: absolute;
-    left: 0; top: 0.5em;
-    width: 5px; height: 5px;
-    background: var(--spark);
-    border-radius: 1px;
-    transform: rotate(45deg);
+    left: 0; top: 0.62em;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--steel-soft);
   }
 
   .pf-link {
@@ -300,10 +289,11 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
     gap: 0.35em;
     margin-top: auto;
     padding-top: 1.5rem;
-    font-size: 0.78rem;
+    font-size: 0.88rem;
+    font-weight: 500;
     color: var(--ink);
   }
-  .pf-link:hover { color: var(--spark-ink); }
+  .pf-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 
   @media (max-width: 960px) {
     .pf-steps { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }

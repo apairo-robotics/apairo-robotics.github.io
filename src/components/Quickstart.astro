@@ -29,7 +29,7 @@ sample.data["imu"]     # ndarray (6,)       float64
 <section id="quickstart" class="section quickstart">
   <div class="wrap qs-grid">
     <div class="qs-copy" data-reveal>
-      <p class="eyebrow">04 / Quickstart</p>
+      <p class="eyebrow">Quickstart</p>
       <h2>Loaded and training in a&nbsp;dozen lines.</h2>
       <p class="qs-lede">
         The core ships on PyPI. Add only the layers you need — every package
@@ -37,7 +37,7 @@ sample.data["imu"]     # ndarray (6,)       float64
         together by hand.
       </p>
 
-      <ol class="qs-steps mono">
+      <ol class="qs-steps">
         <li><span>Load</span> any profiled folder — or a built-in dataset class.</li>
         <li><span>Sync</span> sensors running at different rates onto one clock.</li>
         <li><span>Transform</span> lazily — augment on access, leave disk untouched.</li>
@@ -46,15 +46,11 @@ sample.data["imu"]     # ndarray (6,)       float64
 
       <a class="btn" href="https://apairo-robotics.github.io/apairo/" target="_blank" rel="noopener">
         Full documentation
-        <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
       </a>
     </div>
 
     <div class="qs-code" data-reveal style="--delay: 120ms">
-      <div class="code-bar mono">
-        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div class="code-bar">
         <span class="code-file">quickstart.py</span>
       </div>
       <div class="code-body code-tokens">
@@ -89,7 +85,7 @@ sample.data["imu"]     # ndarray (6,)       float64
     counter-increment: s;
     position: relative;
     padding-left: 2.4rem;
-    font-size: 0.86rem;
+    font-size: 0.95rem;
     color: var(--ink-2);
     line-height: 1.5;
   }
@@ -97,11 +93,12 @@ sample.data["imu"]     # ndarray (6,)       float64
     content: counter(s, decimal-leading-zero);
     position: absolute;
     left: 0; top: 0;
-    color: var(--spark-ink);
-    font-size: 0.78rem;
-    letter-spacing: 0.05em;
+    color: var(--steel);
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
-  .qs-steps span { color: var(--ink); font-weight: 500; }
+  .qs-steps span { color: var(--ink); font-weight: 600; }
 
   /* code card */
   .qs-code {
@@ -110,8 +107,7 @@ sample.data["imu"]     # ndarray (6,)       float64
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--paper-soft);
-    box-shadow: 0 30px 60px -40px rgba(35, 44, 54, 0.5);
-  }
+      }
   .code-bar {
     display: flex;
     align-items: center;
@@ -120,14 +116,7 @@ sample.data["imu"]     # ndarray (6,)       float64
     border-bottom: 1px solid var(--line);
     background: var(--paper-deep);
   }
-  .dots { display: inline-flex; gap: 6px; }
-  .dots i {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: var(--line-strong);
-  }
-  .dots i:first-child { background: var(--spark); }
-  .code-file { font-size: 0.72rem; color: var(--steel); letter-spacing: 0.05em; }
+  .code-file { font-family: var(--font-mono); font-size: 0.78rem; color: var(--steel); }
 
   .code-body {
     padding: 1.3rem 1.4rem;

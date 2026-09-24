@@ -1,153 +1,138 @@
----
-import Machinery from "./Machinery.astro";
----
-
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <p class="eyebrow" data-reveal>Robotics sensor-data stack</p>
 
-      <h1 data-reveal style="--delay: 80ms">
-        From raw <span class="ink-spark">bags</span> to
-        training-ready <span class="serif-it">datasets</span>.
+      <h1 data-reveal style="--delay: 60ms">
+        From raw bags to training-ready datasets.
       </h1>
 
-      <p class="lede" data-reveal style="--delay: 160ms">
-        <strong>apairo</strong> is an open, modular toolkit for robotics sensor data.
+      <p class="lede" data-reveal style="--delay: 120ms">
+        <strong>apairo</strong> is an open, modular Python toolkit for robotics sensor data.
         Profile any dataset in one command, then load, sync, transform and visualise
         LiDAR, images and trajectories through one numpy-native API.
       </p>
 
-      <div class="hero-actions" data-reveal style="--delay: 240ms">
-        <a class="btn" href="#profile">
-          Profile a dataset
-          <svg class="arrow arrow--down" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a class="btn btn--ghost" href="https://apairo-robotics.github.io/apairo/" target="_blank" rel="noopener">
+      <div class="hero-actions" data-reveal style="--delay: 180ms">
+        <a class="btn" href="https://apairo-robotics.github.io/apairo/" target="_blank" rel="noopener">
           Read the docs
         </a>
+        <a class="btn btn--ghost" href="https://github.com/apairo-robotics/apairo" target="_blank" rel="noopener">
+          View on GitHub
+        </a>
       </div>
 
-      <div class="install" data-reveal style="--delay: 320ms">
-        <div class="install-row">
-          <span class="install-prompt mono">$</span>
-          <code class="mono">pip install apairo</code>
-          <button class="install-copy mono" data-copy="pip install apairo" aria-label="Copy install command">copy</button>
-        </div>
-        <div class="install-row">
-          <span class="install-prompt mono">$</span>
-          <code class="mono">apairo status ./my_dataset</code>
-          <span class="install-note mono"># profile it</span>
-        </div>
+      <div class="install" data-reveal style="--delay: 240ms">
+        <code class="mono"><span class="install-prompt">$</span> pip install apairo</code>
+        <button class="install-copy" data-copy="pip install apairo" aria-label="Copy install command">Copy</button>
       </div>
+
+      <p class="hero-meta" data-reveal style="--delay: 280ms">
+        v0.8.0 · MIT licence · Python ≥ 3.11 ·
+        <a href="#cite">Cite</a>
+      </p>
     </div>
 
-    <div class="hero-machine" data-reveal style="--delay: 200ms">
-      <Machinery />
-      <p class="machine-cap mono">fig.01 — the pipeline, end to end</p>
-    </div>
+    <figure class="hero-fig" data-reveal style="--delay: 120ms">
+      <img
+        src="/assets/hero-rellis.webp"
+        width="1006"
+        height="655"
+        alt="Top-down view of a forest trail reconstructed from LiDAR scans, with the robot's trajectory drawn along the path."
+        fetchpriority="high"
+      />
+      <figcaption>
+        RELLIS-3D, sequence 00000: 80 LiDAR scans placed with their poses.
+        The robot's trajectory is drawn in ochre.
+      </figcaption>
+    </figure>
   </div>
 
-  <hr class="rule hero-rule" />
+  <hr class="rule" />
 </section>
 
 <style>
-  .hero { padding-top: clamp(3.5rem, 8vw, 6rem); padding-bottom: 0; }
+  .hero { padding-top: clamp(3rem, 7vw, 5rem); }
   .hero-grid {
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: clamp(2rem, 5vw, 4.5rem);
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
-    padding-bottom: clamp(3.5rem, 8vw, 6rem);
+    padding-bottom: clamp(3rem, 7vw, 5rem);
   }
-  .hero-copy { max-width: 38ch; }
 
   h1 {
-    font-size: clamp(2.7rem, 6.4vw, 4.9rem);
-    margin-top: 1.6rem;
-    font-weight: 420;
+    font-size: clamp(2.3rem, 4.4vw, 3.5rem);
+    line-height: 1.08;
+    margin-top: 1.2rem;
+    max-width: 16ch;
   }
-  .ink-spark { color: var(--spark-ink); }
-  .serif-it { font-style: italic; font-weight: 430; }
 
   .lede {
-    margin-top: 1.7rem;
-    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    margin-top: 1.5rem;
+    font-size: clamp(1.02rem, 1.4vw, 1.15rem);
     color: var(--ink-2);
-    max-width: 44ch;
+    max-width: 48ch;
   }
   .lede strong { font-weight: 600; }
 
   .hero-actions {
-    margin-top: 2.2rem;
+    margin-top: 2rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.8rem;
+    gap: 0.7rem;
   }
-  .btn:hover .arrow--down { transform: translateY(3px); }
 
   .install {
-    margin-top: 1.8rem;
+    margin-top: 1.5rem;
     display: inline-flex;
-    flex-direction: column;
-    gap: 0.45rem;
+    align-items: center;
+    gap: 1rem;
     background: var(--paper-soft);
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 0.6rem 0.7rem 0.6rem 0.95rem;
-    font-size: 0.9rem;
+    border-radius: 8px;
+    padding: 0.5rem 0.55rem 0.5rem 0.9rem;
+    font-size: 0.88rem;
   }
-  .install-row {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    min-height: 1.9rem;
-  }
-  .install-prompt { color: var(--spark-ink); }
-  .install code { color: var(--ink); letter-spacing: -0.01em; white-space: nowrap; }
-  .install-note {
-    white-space: nowrap;
-    margin-left: 0.3rem;
-    font-size: 0.74rem;
-    color: var(--steel);
-  }
+  .install code { color: var(--ink); white-space: nowrap; }
+  .install-prompt { color: var(--steel); }
   .install-copy {
-    margin-left: 0.3rem;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 500;
     color: var(--steel);
     background: transparent;
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 0.32em 0.6em;
+    padding: 0.25em 0.65em;
     cursor: pointer;
-    transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
   }
   .install-copy:hover { color: var(--ink); border-color: var(--line-strong); }
-  .install-copy[data-done]::after { content: "✓"; }
 
-  .hero-machine {
-    justify-self: end;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 1rem;
+  .hero-meta {
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
+    color: var(--steel);
   }
-  .machine-cap { font-size: 0.7rem; color: var(--steel); letter-spacing: 0.08em; }
+  .hero-meta a {
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .hero-meta a:hover { color: var(--ink); border-color: var(--ink); }
 
-  .hero-rule { opacity: 0.8; }
+  .hero-fig { margin: 0; }
+  .hero-fig img { display: block; width: 100%; height: auto; }
+  .hero-fig figcaption {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--steel);
+    text-align: center;
+  }
 
   @media (max-width: 900px) {
     .hero-grid { grid-template-columns: 1fr; }
-    .hero-machine { justify-self: start; align-items: flex-start; order: -1; max-width: 420px; }
-    .machine-cap { align-self: flex-start; }
-  }
-  @media (max-width: 420px) {
-    .install { font-size: 0.8rem; }
-    .install-note { display: none; }
+    .hero-fig { max-width: 520px; }
   }
 </style>

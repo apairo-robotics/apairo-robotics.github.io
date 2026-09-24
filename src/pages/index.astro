@@ -3,15 +3,15 @@ import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
 import Profile from "../components/Profile.astro";
-import Flow from "../components/Flow.astro";
 import Packages from "../components/Packages.astro";
 import Quickstart from "../components/Quickstart.astro";
 import Numbers from "../components/Numbers.astro";
+import Cite from "../components/Cite.astro";
 import Footer from "../components/Footer.astro";
 
 const title = "apairo — the open robotics sensor-data stack";
 const description =
-  "apairo is an open, modular Python toolkit for robotics sensor data — profile any dataset in one command, then extract, load, sync, transform, visualise and share LiDAR, images and trajectories through one numpy-native API.";
+  "apairo is an open, modular Python toolkit for robotics sensor data — profile any dataset in one command, then extract, load, sync, transform and visualise LiDAR, images and trajectories through one numpy-native API.";
 const url = "https://apairo-robotics.github.io/";
 ---
 
@@ -36,6 +36,8 @@ const url = "https://apairo-robotics.github.io/";
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
+    <script is:inline>document.documentElement.classList.add("js");</script>
+
     <!-- Fonts: Fraunces (display) · Hanken Grotesk (body) · JetBrains Mono (chrome) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -51,10 +53,10 @@ const url = "https://apairo-robotics.github.io/";
     <main>
       <Hero />
       <Profile />
-      <Flow />
       <Packages />
       <Quickstart />
       <Numbers />
+      <Cite />
     </main>
     <Footer />
 
@@ -67,8 +69,7 @@ const url = "https://apairo-robotics.github.io/";
         color: var(--paper);
         padding: 0.7rem 1.1rem;
         border-radius: 0 0 8px 0;
-        font-family: var(--font-mono);
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         z-index: 100;
       }
       .skip:focus { left: 0; }
@@ -113,10 +114,8 @@ const url = "https://apairo-robotics.github.io/";
           try {
             await navigator.clipboard.writeText(text);
             const prev = btn.textContent;
-            btn.setAttribute("data-done", "");
-            btn.textContent = "copied";
+            btn.textContent = "Copied";
             setTimeout(() => {
-              btn.removeAttribute("data-done");
               btn.textContent = prev;
             }, 1400);
           } catch {
