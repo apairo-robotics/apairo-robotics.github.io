@@ -39,8 +39,8 @@ const satellites = [
   {
     name: "apairo_preprocess",
     role: "Offline",
-    desc: "Offline pipelines that compute a derived channel once and persist it: LiDAR odometry, ground segmentation, traversability ground truth and learned semantic labels.",
-    features: ["KISS-ICP · GICP odometry", "CSF · RANSAC · TerraSeg ground", "SPVNAS · PTv3 · Pointcept labels"],
+    desc: "Offline pipelines that compute a derived channel once and persist it: LiDAR odometry, ground segmentation, traversability ground truth, LiDAR-to-camera projection and bird's-eye-view rasters.",
+    features: ["KISS-ICP · GICP odometry", "CSF · RANSAC · from-labels ground", "Traversability from trajectory or labels", "LiDAR → camera projection · BEV rasterisation"],
     links: [gh("apairo_preprocess")],
   },
   {
