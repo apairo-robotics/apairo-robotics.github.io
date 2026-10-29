@@ -1,7 +1,7 @@
 ---
 import { Code } from "astro:components";
 
-// Verbatim output of apairo 0.8.0 on an extractor-style sequence
+// Verbatim output of apairo 0.9.0 (identical to 0.8.0's) on an extractor-style sequence
 // (four channels at 10 / 20 / 50 / 100 Hz, ouster_points aliased as lidar).
 type Line = { k: "cmd" | "head" | "rule" | "row" | "ok"; t: string };
 const session: Line[] = [
@@ -31,7 +31,7 @@ const steps = [
     i: "02",
     verb: "Register",
     cmd: "apairo init",
-    desc: "Detects each channel's loader — npy, bin, img, zarr, pcd — and records it under <code>.apairo/</code>. Idempotent, and it never rewrites your data.",
+    desc: "Detects each channel's format — npy, bin, img, zarr, pcd, csv, or a plugin's — and records it under <code>.apairo/</code>. Idempotent, and it never rewrites your data.",
   },
   {
     i: "03",
@@ -81,7 +81,7 @@ const ext = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hi
 
     <div class="term" data-reveal style="--delay: 100ms">
       <div class="term-bar mono">
-        <span class="term-title">~/data — apairo 0.8</span>
+        <span class="term-title">~/data — apairo 0.9</span>
       </div>
       <pre class="term-body mono"><code>{session.map((l) => (
         <span class={`ln ln--${l.k}`}>{l.k === "cmd" && <span class="ps">$ </span>}{l.t}</span>
