@@ -23,11 +23,11 @@ const gh = (repo: string) => ({ label: "GitHub", href: `https://github.com/apair
 
 const satellites = [
   {
-    name: "apairo_extractor",
+    name: "apairo_ros",
     role: "Ingest",
-    desc: "Turn ROS bags into an apairo-native dataset. List every bag's duration, message counts and topic coverage first, then extract in parallel — from an interactive TUI or headless.",
-    features: ["ROS 1 · ROS 2 · MCAP", "Bag & topic coverage report (-l)", "/tf → poses · /tf_static → calibration"],
-    links: [gh("apairo_extractor")],
+    desc: "Turn ROS bags into an apairo-native dataset, or read them in place. List every bag's duration, message counts and topic coverage first, then extract in parallel — from an interactive TUI or headless.",
+    features: ["ROS 1 · ROS 2 · MCAP", "Bag & topic coverage report (-l)", "/tf → poses · /tf_static → calibration", "BagDataset: a bag read in place"],
+    links: [gh("apairo_ros")],
   },
   {
     name: "apairo_transform",
